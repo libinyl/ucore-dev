@@ -8,13 +8,13 @@
 #include <clock.h>
 #include <intr.h>
 #include <pmm.h>
-#include <kmonitor.h>
-void kern_init(void) __attribute__((noreturn));
-void grade_backtrace(void);
+
+int kern_init(void) __attribute__((noreturn));
+
 static void lab1_switch_test(void);
 
-void
-kern_init(void){
+int
+kern_init(void) {
     extern char edata[], end[];
     memset(edata, 0, end - edata);
 
@@ -37,7 +37,7 @@ kern_init(void){
 
     //LAB1: CAHLLENGE 1 If you try to do it, uncomment lab1_switch_test()
     // user/kernel mode switch test
-    lab1_switch_test();
+    //lab1_switch_test();
 
     /* do nothing */
     while (1);

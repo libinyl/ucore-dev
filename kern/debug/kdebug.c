@@ -3,7 +3,10 @@
 #include <stab.h>
 #include <stdio.h>
 #include <string.h>
+#include <sync.h>
 #include <kdebug.h>
+#include <kmonitor.h>
+#include <assert.h>
 
 #define STACKFRAME_DEPTH 20
 
@@ -302,8 +305,7 @@ print_stackframe(void) {
       *           NOTICE: the calling funciton's return addr eip  = ss:[ebp+4]
       *                   the calling funciton's ebp = ss:[ebp]
       */
-    uint32_t ebp = read_ebp();
-    uint32_t eip = read_eip();
+    uint32_t ebp = read_ebp(), eip = read_eip();
 
     for (int i = 0; ebp != 0 && i < STACKFRAME_DEPTH; i ++) {
         cprintf("ebp:0x%08x eip:0x%08x args:", ebp, eip);
@@ -313,8 +315,8 @@ print_stackframe(void) {
         }
         cprintf("\n");
         print_debuginfo(eip - 1);
-        ebp = ((uint32_t *)ebp)[0];
         eip = ((uint32_t *)ebp)[1];
+        ebp = ((uint32_t *)ebp)[0];
     }
 }
 
